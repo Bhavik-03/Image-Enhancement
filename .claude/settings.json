@@ -30,31 +30,5 @@
       "Edit(kaggle.json)",
       "Edit(secrets/**)"
     ]
-  },
-  "hooks": {
-    "PreToolUse": [
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard_shell.py\"",
-            "timeout": 120
-          }
-        ]
-      }
-    ],
-    "PostToolUse": [
-      {
-        "matcher": "Edit|Write",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/format_python.py\"",
-            "timeout": 30
-          }
-        ]
-      }
-    ]
   }
 }

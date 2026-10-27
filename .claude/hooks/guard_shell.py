@@ -70,7 +70,7 @@ def check_segment(seg, on_branch):
             block("force push is not allowed")
         if re.search(r"--(all|mirror)\b", seg):
             block("--all/--mirror push is not allowed")
-        if re.search(r"(:|\s)main(\s|$)", seg):
+        if re.search(r"(:|\s)(refs/heads/)?main(\s|$)", seg):
             block("pushing main is not allowed; merge through a PR")
         args = [a for a in seg.split()[2:] if not a.startswith("-")]
         if len(args) < 2 and on_branch == "main":

@@ -44,6 +44,13 @@ class UWnet(nn.Module):
         return self.output(out)
 
 
+def load_finetuned(path):
+    """Load a state_dict saved by train.py (plain tensors only, so weights_only=True is safe)."""
+    model = UWnet()
+    model.load_state_dict(torch.load(path, map_location="cpu", weights_only=True))
+    return model
+
+
 def load_pretrained(path, sha256=None):
     """Load a checkpoint that is a whole pickled model (the authors' format), not a state_dict.
 

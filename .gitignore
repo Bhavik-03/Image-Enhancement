@@ -10,3 +10,4 @@ runs/
 .ipynb_checkpoints/
 .env
 kaggle.json
+.claude/settings.local.json

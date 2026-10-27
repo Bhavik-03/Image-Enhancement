@@ -6,7 +6,9 @@ Hardware: RTX 4060 Laptop (8 GB VRAM), 15 GB RAM, Python 3.10.
 
 ## Commands
 - Env: `python3 -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt`
-- CUDA check: `python -c "import torch; print(torch.cuda.is_available())"`
+- CUDA check: `python -c "import torch; print(torch.cuda.is_available())"` (only proves the driver; a conv on the GPU is the real test)
+- cuDNN needs the venv's NVIDIA libs on the library path, else any GPU conv fails with `CUDNN_STATUS_SUBLIBRARY_LOADING_FAILED`: `export LD_LIBRARY_PATH=$VIRTUAL_ENV/lib/python3.10/site-packages/nvidia/cu13/lib:$VIRTUAL_ENV/lib/python3.10/site-packages/nvidia/cudnn/lib:$LD_LIBRARY_PATH` (already appended to `.venv/bin/activate`).
+- Pretrained weights: `data/downloads/shallow_uwnet.ckpt` (authors' Google Drive file). It is a pickled model, so load it only with `model.load_pretrained(path, sha256=AUTHORS_SHA256)`, never `torch.load(weights_only=False)`.
 
 ## Layout (planned)
 `data.py` `model.py` `losses.py` `train.py` `evaluate.py` `enhance.py` `app.py`; `data/`, `checkpoints/`, `results/` are gitignored.

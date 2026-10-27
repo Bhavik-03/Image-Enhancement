@@ -5,3 +5,5 @@ scikit-image
 gradio
 tqdm
 numpy
+pytest
+ruff

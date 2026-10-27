@@ -3,6 +3,7 @@ torchvision
 opencv-python
 scikit-image
 gradio
+imageio-ffmpeg
 tqdm
 numpy
 pytest

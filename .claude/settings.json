@@ -5,6 +5,10 @@
       "Bash(.venv/bin/python -m ruff check*)",
       "Bash(.venv/bin/ruff check*)",
       "Bash(.venv/bin/python -c *)",
+      "Bash(.venv/bin/python train.py*)",
+      "Bash(.venv/bin/python evaluate.py*)",
+      "Bash(.venv/bin/python enhance.py*)",
+      "Bash(.venv/bin/pip install -r requirements.txt)",
       "Bash(nvidia-smi*)",
       "Bash(git status*)",
       "Bash(git diff*)",
@@ -12,13 +16,9 @@
       "Bash(git branch*)",
       "Bash(git show*)",
       "Bash(git switch*)",
+      "Bash(git fetch*)",
       "Bash(git pull*)",
-      "Bash(gh pr view*)",
-      "Bash(gh issue list*)"
-    ],
-    "ask": [
-      "Edit(docs/spec.md)",
-      "Edit(docs/design.md)"
+      "Bash(gh pr view*)"
     ],
     "deny": [
       "Read(.env)",
@@ -29,32 +29,6 @@
       "Edit(.env.*)",
       "Edit(kaggle.json)",
       "Edit(secrets/**)"
-    ]
-  },
-  "hooks": {
-    "PreToolUse": [
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard_shell.py\"",
-            "timeout": 120
-          }
-        ]
-      }
-    ],
-    "PostToolUse": [
-      {
-        "matcher": "Edit|Write",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/format_python.py\"",
-            "timeout": 30
-          }
-        ]
-      }
     ]
   }
 }

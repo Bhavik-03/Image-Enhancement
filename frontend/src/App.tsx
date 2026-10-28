@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import CompareSlider from "./components/CompareSlider";
 import ModelPicker from "./components/ModelPicker";
 import ProgressRing from "./components/ProgressRing";
@@ -30,7 +30,8 @@ export default function App() {
   const [resultUrl, setResultUrl] = useState<string | null>(null);
   const [videoStatus, setVideoStatus] = useState<VideoJobStatus | null>(null);
 
-  const sourceUrl = useMemo(() => (file ? URL.createObjectURL(file) : null), [file]);
+  const [sourceUrl, setSourceUrl] = useState<string | null>(null);
+  const sourceUrlRef = useRef<string | null>(null);
   const resultUrlRef = useRef<string | null>(null);
 
   useEffect(() => {
@@ -43,11 +44,13 @@ export default function App() {
       .catch(() => setErrorMsg("Could not reach the backend. Is `uvicorn api:app` running?"));
   }, []);
 
+  // Revoke on unmount only — creation/revocation on file change is handled explicitly in
+  // handleFile/reset below (an effect here would set state from an effect just to undo it).
   useEffect(() => {
     return () => {
-      if (sourceUrl) URL.revokeObjectURL(sourceUrl);
+      if (sourceUrlRef.current) URL.revokeObjectURL(sourceUrlRef.current);
     };
-  }, [sourceUrl]);
+  }, []);
 
   function reset() {
     setFile(null);
@@ -55,6 +58,9 @@ export default function App() {
     setStage("idle");
     setErrorMsg(null);
     setVideoStatus(null);
+    if (sourceUrlRef.current) URL.revokeObjectURL(sourceUrlRef.current);
+    sourceUrlRef.current = null;
+    setSourceUrl(null);
     if (resultUrlRef.current && resultUrlRef.current.startsWith("blob:")) {
       URL.revokeObjectURL(resultUrlRef.current);
     }
@@ -67,6 +73,9 @@ export default function App() {
     setFile(f);
     setKind(k);
     setStage("ready");
+    const url = URL.createObjectURL(f);
+    sourceUrlRef.current = url;
+    setSourceUrl(url);
   }
 
   async function runEnhance() {

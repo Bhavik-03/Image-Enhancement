@@ -1,32 +1,41 @@
-# React + TypeScript + Vite
+# Deep Restore — frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+React + TypeScript + Tailwind v4 UI for the Image Enhancement API. Drag in a
+photo or video, pick a model, get a before/after comparison (a draggable
+slider for photos, synced side-by-side players for video) and a download.
 
-Currently, two official plugins are available:
+## Develop
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Run the backend and frontend as two processes; Vite proxies `/api/*` to it
+(see `vite.config.ts`):
 
-## React Compiler
+```
+# terminal 1, from the repo root
+source .venv/bin/activate && uvicorn api:app --reload
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+# terminal 2, from frontend/
+npm install
+npm run dev        # http://localhost:5173
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+## Build
+
+```
+npm run build       # writes dist/
+```
+
+`api.py` serves `frontend/dist/` itself when it exists, so after building,
+`python api.py` alone (from the repo root) runs the whole app on one port —
+no separate frontend server needed.
+
+## Layout
+
+- `src/lib/api.ts` — fetch wrappers for the backend (`/api/models`,
+  `/api/enhance/photo`, the video job endpoints).
+- `src/components/UploadZone.tsx` — drag-and-drop + file picker, detects
+  photo vs. video by extension/MIME type.
+- `src/components/CompareSlider.tsx` — draggable before/after for photos.
+- `src/components/VideoCompare.tsx` — synced side-by-side video players.
+- `src/components/ProgressRing.tsx` — the circular progress indicator shown
+  while a video job runs (driven by `enhance_video`'s `on_frame` callback).
+- `src/App.tsx` — ties it together: upload → model pick → enhance → result.

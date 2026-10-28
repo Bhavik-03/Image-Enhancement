@@ -49,15 +49,24 @@ python evaluate.py --data data/uieb --split test --run baseline      # raw vs pr
 python train.py --data data/uieb --run ft1 --epochs 30               # fine-tune; best weights -> checkpoints/ft1_best.pth
 python evaluate.py --data data/uieb --split test --checkpoint checkpoints/ft1_best.pth --run ft1_test
 python enhance.py photo.jpg --checkpoint checkpoints/ft1_best.pth    # also videos: clip.mp4 --smooth 0.3
-python app.py                                                        # Gradio demo at http://127.0.0.1:7860
 ```
 
 - `train.py` refuses to reuse a run name, saves a config (including the git commit) and per-epoch log to `results/<run>/`. If the GPU runs out of memory, pass `--batch-size 8`.
 - `evaluate.py` writes `results/<run>/metrics.json` and raw | enhanced | reference strips for the first images.
 - `enhance.py` works at full resolution; frames over 4 megapixels are processed in overlapping bands (identical result, about 3.6 GB VRAM up to 8K).
 
+## Web demo
+
+A FastAPI backend (`api.py`) wraps `enhance.py` behind an HTTP API, with a React frontend (`frontend/`) for drag-and-drop photo/video enhancement, a before/after slider, and a download button — see `frontend/README.md` for the dev setup.
+
+```bash
+npm --prefix frontend install
+npm --prefix frontend run build
+python api.py          # serves the API and the built frontend together, at http://127.0.0.1:8000
+```
+
 ## Project layout
 
-`data.py` paired dataset and seeded split | `model.py` Shallow-UWnet and safe loaders | `losses.py` L1 + perceptual loss | `train.py` | `evaluate.py` | `enhance.py` | `app.py` | `tests/` CPU-only tests (`python -m pytest -q`)
+`data.py` paired dataset and seeded split | `model.py` Shallow-UWnet and safe loaders | `losses.py` L1 + perceptual loss | `train.py` | `evaluate.py` | `enhance.py` | `api.py` FastAPI backend | `frontend/` React UI | `tests/` CPU-only tests (`python -m pytest -q`)
 
 `data/`, `checkpoints/` and `results/` are gitignored.

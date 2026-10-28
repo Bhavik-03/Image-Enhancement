@@ -1,0 +1,113 @@
+@import "tailwindcss";
+
+/*
+  Design: "dive computer" console. Deep-water palette (near-black teal, not
+  pure black), a warm coral accent standing in for the red/orange wavelengths
+  the model restores, Fraunces for display type (something with presence,
+  not another geometric sans), Figtree for UI text, JetBrains Mono for the
+  technical readouts (%, fps, px) a dive computer would show.
+*/
+:root {
+  --bg: #071a24;
+  --bg-elevated: #0c2330;
+  --surface: #11303f;
+  --surface-hover: #163a4b;
+  --border: rgba(231, 243, 243, 0.1);
+  --border-strong: rgba(231, 243, 243, 0.2);
+  --text: #eaf4f4;
+  --text-muted: #8fadb4;
+  --text-faint: #5c7980;
+  --accent: #ff6b4a;
+  --accent-soft: rgba(255, 107, 74, 0.14);
+  --accent-strong: #ff8565;
+  --success: #3ddc97;
+  --success-soft: rgba(61, 220, 151, 0.14);
+  --danger: #ff5c7a;
+  --danger-soft: rgba(255, 92, 122, 0.14);
+
+  --font-display: "Fraunces", ui-serif, serif;
+  --font-body: "Figtree", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  background-image:
+    radial-gradient(ellipse 1200px 600px at 15% -10%, rgba(255, 107, 74, 0.08), transparent 60%),
+    radial-gradient(ellipse 900px 700px at 110% 20%, rgba(61, 220, 151, 0.06), transparent 55%);
+  color: var(--text);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--accent-soft);
+  color: var(--text);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 999px;
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+/* subtle grid texture, like depth-gauge graph paper */
+.depth-grid {
+  background-image:
+    linear-gradient(rgba(231, 243, 243, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(231, 243, 243, 0.035) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+@keyframes drift {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+.animate-drift {
+  animation: drift 6s ease-in-out infinite;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-rise {
+  animation: rise 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}

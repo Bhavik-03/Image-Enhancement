@@ -85,8 +85,12 @@ def enhance_image(model, src, dst, device="cpu"):
         raise OSError(f"cannot write image {dst}")
 
 
-def enhance_video(model, src, dst, device="cpu", smooth=0.0):
-    """Frame by frame. smooth in [0,1) blends each result with the previous output (less flicker)."""
+def enhance_video(model, src, dst, device="cpu", smooth=0.0, on_frame=None):
+    """Frame by frame. smooth in [0,1) blends each result with the previous output (less flicker).
+
+    on_frame(n, total), if given, is called after each frame is written (n = frames done so far;
+    total = cv2's frame count estimate, or None when the codec doesn't report one).
+    """
     if not 0 <= smooth < 1:
         raise ValueError(f"smooth must be in [0, 1), got {smooth}")
     fourcc = {".avi": "MJPG", ".mp4": "mp4v", ".mov": "mp4v", ".mkv": "mp4v"}.get(
@@ -99,6 +103,7 @@ def enhance_video(model, src, dst, device="cpu", smooth=0.0):
         raise FileNotFoundError(f"cannot read video: {src}")
     fps = cap.get(cv2.CAP_PROP_FPS)
     fps = fps if fps > 0 else 25.0  # also catches NaN
+    total = int(cap.get(cv2.CAP_PROP_FRAME_COUNT)) or None  # 0/NaN for some codecs -> unknown
     model, writer, prev, n = model.to(device).eval(), None, None, 0
     try:
         while True:
@@ -118,6 +123,8 @@ def enhance_video(model, src, dst, device="cpu", smooth=0.0):
                     raise OSError(f"cannot write video (codec or path problem?): {dst}")
             writer.write(cv2.cvtColor(prev.round().astype(np.uint8), cv2.COLOR_RGB2BGR))
             n += 1
+            if on_frame is not None:
+                on_frame(n, total)
     finally:
         cap.release()
         if writer is not None:

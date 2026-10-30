@@ -2,9 +2,12 @@ torch>=2.6
 torchvision
 opencv-python
 scikit-image
-gradio
 imageio-ffmpeg
 tqdm
 numpy
+fastapi
+uvicorn[standard]
+python-multipart
 pytest
 ruff
+httpx

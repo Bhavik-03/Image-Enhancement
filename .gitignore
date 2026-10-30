@@ -11,3 +11,10 @@ runs/
 .env
 kaggle.json
 .claude/settings.local.json
+
+# Coursework submission material (report, source-code PDF, chat screenshots), kept local only
+submission/
+WhatsApp Image *.jpeg
+Underwater Image Enhancement - Mini Project Report.pdf
+Underwater Image Enhancement - Mini Project Report.docx
+SIR mini-project report.docx

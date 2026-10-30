@@ -12,7 +12,7 @@ Restore the colour and clarity of real underwater photos and video with a tiny d
 
 ## Contents
 
-[The problem](#the-problem) · [Highlights](#highlights) · [How it works](#how-it-works) · [Results](#results) · [Large frames and speed](#large-frames-and-speed) · [Web app](#web-app) · [Quick start](#quick-start) · [Usage](#usage) · [Project layout](#project-layout) · [Testing](#testing-and-reproducibility) · [Limitations](#limitations) · [References](#references)
+[The problem](#the-problem) · [Highlights](#highlights) · [How it works](#how-it-works) · [Results](#results) · [Large frames and speed](#large-frames-and-speed) · [Web app](#web-app) · [Quick start](#quick-start) · [Usage](#usage) · [Project layout](#project-layout) · [Testing](#testing-and-reproducibility) · [Limitations](#limitations) · [References](#references) · [Author](#author)
 
 ## The problem
 
@@ -230,6 +230,6 @@ Development follows one feature branch per step, merged through pull requests wi
 4. J. Johnson, A. Alahi, L. Fei-Fei. *Perceptual Losses for Real-Time Style Transfer and Super-Resolution.* ECCV 2016.
 5. K. Simonyan, A. Zisserman. *Very Deep Convolutional Networks for Large-Scale Image Recognition.* ICLR 2015. [arXiv:1409.1556](https://arxiv.org/abs/1409.1556)
 
-## Team
+## Author
 
-Aaroh Joshi, Arush Koul, Bhavik Fulfagar and Ashmit Jain, COEP Technological University, Pune. Thanks to the authors of Shallow-UWnet and UIEB for openly sharing their model, code and data. UIEB is licensed for non-commercial use only.
+Built by Bhavik Fulfagar as a mini project at COEP Technological University, Pune. Thanks to the authors of Shallow-UWnet and UIEB for openly sharing their model, code and data. UIEB is licensed for non-commercial use only.
